@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+odeagent.db
+odeagent.db-wal
+odeagent.db-shm
+models.txt
+model_check.js
