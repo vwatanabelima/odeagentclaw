@@ -19,8 +19,8 @@ export async function transcribeTelegramVoice(fileUrl: string): Promise<string> 
     const buffer = Buffer.from(arrayBuffer);
     const base64Audio = buffer.toString('base64');
 
-    // Gemini 2.5 Flash is extremely fast and accurate with Portuguese audio
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    // Use a stable, high-throughput free-tier endpoint for Audio transcription.
+    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
     const result = await model.generateContent([
       {

@@ -2,13 +2,13 @@ import { LLMProvider } from './provider';
 import { GeminiProvider } from './gemini';
 import { DeepSeekProvider } from './deepseek';
 
-export type LLMType = 'gemini' | 'deepseek';
+export type LLMType = 'gemini-flash' | 'deepseek';
 
 export class LLMManager {
   private activeProvider: LLMProvider;
   private currentType: LLMType;
 
-  constructor(initialType: LLMType = 'gemini') {
+  constructor(initialType: LLMType = 'gemini-flash') {
     this.currentType = initialType;
     this.activeProvider = this.createProvider(initialType);
   }
@@ -16,12 +16,11 @@ export class LLMManager {
   private createProvider(type: LLMType): LLMProvider {
     switch(type) {
       case 'deepseek':
-        // Defaulting to deepseek-chat but could be configurable
         return new DeepSeekProvider('deepseek-chat');
-      case 'gemini':
+      case 'gemini-flash':
       default:
-        // Defaulting to gemini-2.5-flash
-        return new GeminiProvider('gemini-2.5-flash');
+        // High speed, lightweight model for audio, social media, and chat
+        return new GeminiProvider('gemini-flash-latest');
     }
   }
 

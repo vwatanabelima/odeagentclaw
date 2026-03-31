@@ -23,11 +23,16 @@ export class Agent {
     // Command to change brain
     if (userInput.toLowerCase().startsWith('/brain')) {
       const parts = userInput.split(' ');
-      if (parts[1] && (parts[1] === 'gemini' || parts[1] === 'deepseek')) {
-        llmManager.setProvider(parts[1] as LLMType);
-        return `Brain switched to ${parts[1]}.`;
+      const newBrain = parts[1]?.toLowerCase();
+      if (newBrain === 'flash' || newBrain === 'deepseek') {
+        const typeMap: Record<string, LLMType> = {
+            'flash': 'gemini-flash',
+            'deepseek': 'deepseek'
+        };
+        llmManager.setProvider(typeMap[newBrain]);
+        return `🧠 Cérebro alterado com sucesso! Agora operando no modo: ${newBrain.toUpperCase()}`;
       }
-      return `Current brain is ${llmManager.getActiveType()}. Use /brain gemini or /brain deepseek.`;
+      return `Modo atual: ${llmManager.getActiveType()}.\nUse:\n/brain flash (Áudios, Rápido, Grátis)\n/brain deepseek (Inteligência, Código, Pago)`;
     }
 
     // 1. Save input to memory

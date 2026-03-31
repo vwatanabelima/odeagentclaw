@@ -20,7 +20,7 @@ bot.use(whitelistMiddleware);
 
 // 2. Base Commands
 bot.command('start', (ctx) => {
-  ctx.reply('Saudações. Eu sou OdéAgent (O Caçador Estratégico). Estou operando localmente no seu sistema.\nPara interagir, envie sua mensagem. /clear para limpar memória.\n/brain gemini ou /brain deepseek para trocar LLM.');
+  ctx.reply('Saudações. Eu sou OdéAgent (O Caçador Estratégico). Estou operando localmente no seu sistema.\nPara interagir, envie sua mensagem. /clear para limpar memória.\nPara trocar de motor, use:\n/brain flash (Áudios, Rápido, Grátis)\n/brain deepseek (Inteligência, Código, Pago)');
 });
 
 // 3. Audio Voice hook

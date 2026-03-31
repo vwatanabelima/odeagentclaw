@@ -9,7 +9,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 export class GeminiProvider implements LLMProvider {
   private modelName: string;
 
-  constructor(modelName: string = 'gemini-2.5-flash') {
+  constructor(modelName: string = 'gemini-flash-latest') {
     this.modelName = modelName;
   }
 
@@ -44,14 +44,28 @@ export class GeminiProvider implements LLMProvider {
     // The very last message is the current one
     const latestMessage = messages[messages.length - 1];
     
-    // Start Chat
     const chat = model.startChat({
       history: validHistory,
     });
 
-    const result = await chat.sendMessage(latestMessage.content);
-    return {
-      text: result.response.text(),
-    };
+    let lastError: any;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const result = await chat.sendMessage(latestMessage.content);
+        return {
+          text: result.response.text(),
+        };
+      } catch (err: any) {
+        lastError = err;
+        if (err.status === 503 && attempt < 3) {
+          console.warn(`[Gemini] 503 Server Overload. Retrying in 2 seconds... (Attempt ${attempt}/3)`);
+          await new Promise(res => setTimeout(res, 2000));
+        } else {
+          throw err;
+        }
+      }
+    }
+    
+    throw lastError;
   }
 }
